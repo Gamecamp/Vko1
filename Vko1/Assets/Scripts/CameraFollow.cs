@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		position.Set(player.transform.position.x, player.transform.position.y, -30);
+		position.Set(0, player.transform.position.y, -300);
 
 		transform.position = position;
 	}

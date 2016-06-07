@@ -5,37 +5,62 @@ public class PlayerMovement : MonoBehaviour {
 
 	float yVelocity, xVelocity;
 	public float maxYVelocity, maxXVelocity;
-	public float jumpPower, cursorWidth;
-	Vector2 oldPosition, newPosition;
+	public float jumpPower; 
+	public float noMovementArea, slowMovementArea;
+	Vector2 nextPosition;
 	int direction;
+	Animator animator;
+
+	bool goingUp;
+	float previousYValue;
 
 	// Use this for initialization
 	void Start () {
 		yVelocity = 0;
 		xVelocity = 0;
 		direction = 1;
+		animator = GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		SetXVelocity ();
-		oldPosition = transform.position;
-		newPosition = oldPosition + GetVelocity ();
-		transform.position = newPosition;
+		UpdateMovement ();
+		UpdateAnimation ();
+	}
+
+	void UpdateMovement() {
+		transform.position = (Vector2)transform.position + (Vector2)GetVelocity ();
 		transform.localScale = new Vector3 (direction, 1, 1);
+	}
+
+	void UpdateAnimation() {
+
+		nextPosition = (Vector2)transform.position + GetVelocity ();
+
+		if (transform.position.y < nextPosition.y) {
+			animator.SetBool ("GoingUp", true);
+		} else {
+			animator.SetBool ("GoingUp", false);
+		}
+			
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.tag == "jump") {
-			SetVelocity (new Vector2 (0f, jumpPower));
+			SetVelocity (new Vector2 (xVelocity, jumpPower));
 		}
 	}
 
-	float[] CursorWidthCoordinates(float x) {
-		float[] coordinates = new float[2]{(float)x - cursorWidth/2, (float)x + cursorWidth/2};
+	float[] NoMovementArea(float x) {
+		float[] coordinates = new float[2]{(float)x - noMovementArea / 2, (float)x + noMovementArea / 2};
 		return coordinates;
 	}
 
+	float[] SlowMovementArea(float x) {
+		float[] coordinates = new float[2]{ (float)x - slowMovementArea / 2, (float)x + slowMovementArea / 2 };
+		return coordinates;
+	}
 	float MouseInputX() {
 		Vector3 v3Coordinates = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		float x = v3Coordinates.x;
@@ -62,22 +87,33 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		else yVelocity = velocity.y;
 
-		if (xVelocity < 0)
-			direction = -1;
-		else
-			direction = 1;
+
 	}
 
 	public void SetXVelocity() {
-		float[] xMouse = CursorWidthCoordinates (MouseInputX ());
+		float[] noMovement = NoMovementArea (MouseInputX ());
+		float[] slowMovement = SlowMovementArea (MouseInputX ());
 		float xPlayer = transform.position.x;
 
-		if (xPlayer <= xMouse [0]) {
-			SetVelocity (new Vector2 (GetVelocity ().x + (xMouse [0] - xPlayer) / 100, GetVelocity ().y));
-		} else if (xPlayer >= xMouse [1]) {
-			SetVelocity (new Vector2 (GetVelocity ().x + (xMouse [1] - xPlayer) / 100, GetVelocity ().y));
-		} else if (xPlayer > xMouse [0] && xPlayer < xMouse [1]) {
-			SetVelocity (new Vector2 (0, GetVelocity ().y));
+		if (xPlayer <= slowMovement [0]) {
+			SetVelocity (new Vector2 (GetVelocity ().x + (slowMovement [0] - xPlayer) / 100, GetVelocity ().y));
+		} else if (xPlayer >= slowMovement [1]) {
+			SetVelocity (new Vector2 (GetVelocity ().x + (slowMovement [1] - xPlayer) / 100, GetVelocity ().y));
+		} else if (xPlayer > slowMovement [0] && xPlayer < slowMovement [1]) {
+
+			SetVelocity (new Vector2 (GetVelocity ().x / 3f, GetVelocity ().y));
+
+			if (xPlayer > noMovement [0] && xPlayer < noMovement [1]) {
+				
+			} else { 
+				SetVelocity (new Vector2 (0, GetVelocity ().y));
+			}
+		}
+
+		if (MouseInputX() < xPlayer) {
+			direction = 1;
+		} else {
+			direction = -1;
 		}
 	}
 }

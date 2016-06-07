@@ -30,8 +30,6 @@ public class LevelCreator : MonoBehaviour {
 		if (player.transform.position.y + 30 > lastWind.transform.position.y) {
 
 			helper++;
-
-			Debug.Log ("Here " + helper + ", player position = " + player.transform.position.y);
 			position = DetermineNextPlatformX();
 			lastWind = Instantiate (windArray [Random.Range (0, windArray.Length)], position, Quaternion.identity) as GameObject;
 
