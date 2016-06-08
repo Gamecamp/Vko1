@@ -17,7 +17,7 @@ public class SelfDestruct : MonoBehaviour {
 		}
 	}
 
-	void Kill() {
+	public void Kill() {
 		Destroy (gameObject);
 	}
 }

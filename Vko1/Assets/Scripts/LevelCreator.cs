@@ -8,19 +8,30 @@ public class LevelCreator : MonoBehaviour {
 	GameObject lastWind;
 	Vector2 position;
 
-	public float minX;
-	public float maxX;
+	float minX;
+	float maxX;
 
-	float lastX;
-	float maxXDifference;
+	float maxXdifference;
+
+	public float leftEdgeOfCameraX;
+	public float rightEdgeOfCameraX;
+
+	float minY;
+	float maxY;
 
 	float nextX;
-	float nextY;
+	int nextY;
 
-	float helper = 0;
+	float[] yValues = new float[] { 5, 8, 12, 18, 22 };
 
 	// Use this for initialization
 	void Start () {
+		minX = -30;
+		maxX = 30;
+
+		minY = 5;
+		maxY = 10;
+
 		lastWind = Instantiate (windArray [Random.Range (0, windArray.Length)], transform.position, Quaternion.identity) as GameObject;
 	}
 
@@ -29,8 +40,7 @@ public class LevelCreator : MonoBehaviour {
 
 		if (player.transform.position.y + 30 > lastWind.transform.position.y) {
 
-			helper++;
-			position = DetermineNextPlatformX();
+			position = DetermineNextPlatformLocation();
 			lastWind = Instantiate (windArray [Random.Range (0, windArray.Length)], position, Quaternion.identity) as GameObject;
 
 		}
@@ -38,14 +48,45 @@ public class LevelCreator : MonoBehaviour {
 
 	}
 
-	public Vector2 DetermineNextPlatformX() {
+	public Vector2 DetermineNextPlatformLocation() {
 
-		nextX = Random.Range (minX, maxX);
 
-		nextY = lastWind.transform.position.y + 3;
+		nextY = (int) Mathf.Abs(Random.Range(0, 5));
 
-		lastX = nextX;
+		Debug.Log ("Y on : " + yValues[nextY]);
 
-		return new Vector2 (nextX, nextY);
+		nextX = DetermineNextPlatformX (yValues[nextY]);
+
+		return new Vector2 (nextX, lastWind.transform.position.y + yValues[nextY]);
+
+		Debug.Log ("Y = " + yValues [nextY]);
+	}
+
+	float DetermineNextPlatformX(float y) {
+
+		if (y == 18) {
+			maxXdifference = 16;
+		} else if (y == 10) {
+			maxXdifference = 20;
+		} else {
+			maxXdifference = 24;
+		}
+
+		if (lastWind.transform.position.x - maxXdifference < leftEdgeOfCameraX)
+			minX = leftEdgeOfCameraX;
+		else
+			minX = lastWind.transform.position.x - maxXdifference;
+		
+		if (lastWind.transform.position.x + maxXdifference > rightEdgeOfCameraX)
+			maxX = rightEdgeOfCameraX;
+		else
+			maxX = lastWind.transform.position.x + maxXdifference;
+
+		float x = Random.Range (minX, maxX);
+
+		Debug.Log ("Min X: " + minX + ", max X: " + maxX);
+
+		return x;
+
 	}
 }

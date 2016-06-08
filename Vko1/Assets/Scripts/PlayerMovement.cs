@@ -7,9 +7,16 @@ public class PlayerMovement : MonoBehaviour {
 	public float maxYVelocity, maxXVelocity;
 	public float jumpPower; 
 	public float noMovementArea, slowMovementArea;
+
+	float multiplier;
+
 	Vector2 nextPosition;
-	int direction;
+
+	public int direction;
+
 	Animator animator;
+
+	int bubblegum;
 
 	bool goingUp;
 	float previousYValue;
@@ -19,6 +26,7 @@ public class PlayerMovement : MonoBehaviour {
 		yVelocity = 0;
 		xVelocity = 0;
 		direction = 1;
+		bubblegum = 0;
 		animator = GetComponent<Animator> ();
 	}
 	
@@ -40,16 +48,40 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (transform.position.y < nextPosition.y) {
 			animator.SetBool ("GoingUp", true);
+			RotateDragon ();
 		} else {
 			animator.SetBool ("GoingUp", false);
+			RotateDragon ();
 		}
 			
 	}
+
+	void RotateDragon() {
+		
+		if (animator.GetBool ("GoingUp")) {	
+
+			multiplier = 1 - (GetVelocity ().y / maxYVelocity);
+
+			transform.rotation = Quaternion.Euler (0, 0, (-30*direction) + multiplier * 80 * direction);
+		} else {
+			bubblegum = 0;
+
+			multiplier = maxYVelocity - Mathf.Abs(GetVelocity ().y);
+
+			Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + GetVelocity ().y);
+
+			transform.rotation = Quaternion.Euler (0, 0, multiplier * -60 * direction);
+		}
+	}
+
+
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.tag == "jump") {
 			SetVelocity (new Vector2 (xVelocity, jumpPower));
 		}
+
+		col.GetComponent<SelfDestruct> ().Kill ();
 	}
 
 	float[] NoMovementArea(float x) {
@@ -103,8 +135,12 @@ public class PlayerMovement : MonoBehaviour {
 
 			SetVelocity (new Vector2 (GetVelocity ().x / 3f, GetVelocity ().y));
 
-			if (xPlayer > noMovement [0] && xPlayer < noMovement [1]) {
-				
+			if (xPlayer <= noMovement [0]) {
+
+				SetVelocity (new Vector2 (GetVelocity ().x + (noMovement [0] - xPlayer) / 1.1f, GetVelocity ().y));
+
+			} else if (xPlayer >= noMovement [1]) {
+				SetVelocity (new Vector2 (GetVelocity ().x + (noMovement [1] - xPlayer) / 1.1f, GetVelocity ().y));
 			} else { 
 				SetVelocity (new Vector2 (0, GetVelocity ().y));
 			}
