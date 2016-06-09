@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class CameraFollow : MonoBehaviour {
+public class HiScoreText : MonoBehaviour {
 
 	public GameObject player;
-	Vector3 position;
+	Text hiScore;
 
 	// Use this for initialization
 	void Start () {
-	
+		hiScore = GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
 		if (player.GetComponent<ScoreKeeper> ().GetAlive ()) {
-			position.Set (0, player.transform.position.y, -300);
-			transform.position = position;
-		}
+			hiScore.text = "Height Score: " + (int)player.GetComponent<ScoreKeeper> ().GetHiScore ();
+		}	
 	}
 }
