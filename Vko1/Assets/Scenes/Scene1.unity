@@ -377,6 +377,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1999051315}
+  dampTime: 0.15
+  cameraOffsetUpFromPlayer: 1
 --- !u!81 &1408024791
 AudioListener:
   m_ObjectHideFlags: 0

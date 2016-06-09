@@ -53,13 +53,13 @@ public class LevelCreator : MonoBehaviour {
 
 		nextY = (int) Mathf.Abs(Random.Range(0, 5));
 
-		Debug.Log ("Y on : " + yValues[nextY]);
+		//Debug.Log ("Y on : " + yValues[nextY]);
 
 		nextX = DetermineNextPlatformX (yValues[nextY]);
 
 		return new Vector2 (nextX, lastWind.transform.position.y + yValues[nextY]);
 
-		Debug.Log ("Y = " + yValues [nextY]);
+		//Debug.Log ("Y = " + yValues [nextY]);
 	}
 
 	float DetermineNextPlatformX(float y) {
@@ -84,7 +84,7 @@ public class LevelCreator : MonoBehaviour {
 
 		float x = Random.Range (minX, maxX);
 
-		Debug.Log ("Min X: " + minX + ", max X: " + maxX);
+		//Debug.Log ("Min X: " + minX + ", max X: " + maxX);
 
 		return x;
 

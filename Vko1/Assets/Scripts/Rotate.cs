@@ -20,7 +20,7 @@ public class Rotate : MonoBehaviour {
 			
 			multiplier = 1 - (player.GetComponent<PlayerMovement> ().GetVelocity ().y / player.GetComponent<PlayerMovement> ().maxYVelocity);
 
-			Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + player.GetComponent<PlayerMovement> ().GetVelocity ().y);
+			//Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + player.GetComponent<PlayerMovement> ().GetVelocity ().y);
 
 			player.transform.rotation = Quaternion.Euler (0, 0, multiplier * 45 * player.GetComponent<PlayerMovement> ().direction);
 		} else {

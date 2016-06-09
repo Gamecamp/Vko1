@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			multiplier = maxYVelocity - Mathf.Abs(GetVelocity ().y);
 
-			Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + GetVelocity ().y);
+			//Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + GetVelocity ().y);
 
 			transform.rotation = Quaternion.Euler (0, 0, multiplier * -60 * direction);
 		}

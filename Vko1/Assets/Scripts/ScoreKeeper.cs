@@ -19,7 +19,7 @@ public class ScoreKeeper : MonoBehaviour {
 		if (currentScore > hiScore)
 			hiScore = currentScore;
 		else if (currentScore < hiScore - fallLength)
-			alive = false; Debug.Log ("död");
+			alive = false;
 	}
 
 	public bool GetAlive() {
