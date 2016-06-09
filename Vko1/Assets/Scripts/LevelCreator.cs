@@ -3,10 +3,14 @@ using System.Collections;
 
 public class LevelCreator : MonoBehaviour {
 
-	public GameObject[] windArray;
+	public GameObject wind;
+	public GameObject bonusBalloon;
+
 	public GameObject player;
 	GameObject lastWind;
+
 	Vector2 position;
+	GameObject balloon;
 
 	float minX;
 	float maxX;
@@ -16,8 +20,8 @@ public class LevelCreator : MonoBehaviour {
 	public float leftEdgeOfCameraX;
 	public float rightEdgeOfCameraX;
 
-	float minY;
-	float maxY;
+	public int balloonSpawnRate = 5;
+	private int balloonHelper = 0;
 
 	float nextX;
 	int nextY;
@@ -29,21 +33,32 @@ public class LevelCreator : MonoBehaviour {
 		minX = -30;
 		maxX = 30;
 
-		minY = 5;
-		maxY = 10;
-
-		lastWind = Instantiate (windArray [Random.Range (0, windArray.Length)], transform.position, Quaternion.identity) as GameObject;
+		lastWind = Instantiate (wind, transform.position, Quaternion.identity) as GameObject;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if (player.transform.position.y + 50 > lastWind.transform.position.y) {
 
-		if (player.transform.position.y + 30 > lastWind.transform.position.y) {
+			position = DetermineNextPlatformLocation ();
+			lastWind = Instantiate (wind, position, Quaternion.identity) as GameObject;
 
-			position = DetermineNextPlatformLocation();
-			lastWind = Instantiate (windArray [Random.Range (0, windArray.Length)], position, Quaternion.identity) as GameObject;
+
+			int rnd = Random.Range (0, balloonSpawnRate);
+
+			if (rnd == 0) {
+				balloonHelper++;
+				if (balloonHelper == 4) {
+					position = DetermineNextPlatformLocation ();
+					balloon = Instantiate (bonusBalloon, position, Quaternion.identity) as GameObject;
+					balloonHelper = 0;
+				}
+
+			}
 
 		}
+
+
 
 
 	}
@@ -53,13 +68,10 @@ public class LevelCreator : MonoBehaviour {
 
 		nextY = (int) Mathf.Abs(Random.Range(0, 5));
 
-		Debug.Log ("Y on : " + yValues[nextY]);
-
 		nextX = DetermineNextPlatformX (yValues[nextY]);
 
 		return new Vector2 (nextX, lastWind.transform.position.y + yValues[nextY]);
 
-		Debug.Log ("Y = " + yValues [nextY]);
 	}
 
 	float DetermineNextPlatformX(float y) {
@@ -83,8 +95,6 @@ public class LevelCreator : MonoBehaviour {
 			maxX = lastWind.transform.position.x + maxXdifference;
 
 		float x = Random.Range (minX, maxX);
-
-		Debug.Log ("Min X: " + minX + ", max X: " + maxX);
 
 		return x;
 

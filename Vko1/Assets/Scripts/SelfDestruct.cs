@@ -12,7 +12,7 @@ public class SelfDestruct : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (transform.position.y+20 < player.transform.position.y) {
+		if (transform.position.y+40 < player.transform.position.y) {
 			Kill ();
 		}
 	}

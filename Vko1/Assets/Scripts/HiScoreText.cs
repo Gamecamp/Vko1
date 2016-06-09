@@ -15,7 +15,7 @@ public class HiScoreText : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (player.GetComponent<ScoreKeeper> ().GetAlive ()) {
-			hiScore.text = "Height Score: " + (int)player.GetComponent<ScoreKeeper> ().GetHiScore ();
+			hiScore.text = "Score: " + (int)player.GetComponent<ScoreKeeper> ().GetHiScore () + ", multiplier: " + ((int)(player.GetComponent<ScoreKeeper>().GetMultiplier() * 100)) + "%";
 		}	
 	}
 }

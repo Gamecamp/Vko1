@@ -17,6 +17,7 @@ public class DeathText : MonoBehaviour {
 	void Update () {
 		if (!player.GetComponent<ScoreKeeper> ().GetAlive ()) {
 			death.enabled = true;
+			death.text = "You died! \nScore: " + (int)player.GetComponent<ScoreKeeper> ().GetHiScore ();
 		}	
 	}
 }

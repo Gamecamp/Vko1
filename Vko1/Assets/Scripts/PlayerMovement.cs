@@ -68,8 +68,6 @@ public class PlayerMovement : MonoBehaviour {
 
 			multiplier = maxYVelocity - Mathf.Abs(GetVelocity ().y);
 
-			Debug.Log ("Multiplier: " + multiplier + ", Velocity = " + GetVelocity ().y);
-
 			transform.rotation = Quaternion.Euler (0, 0, multiplier * -60 * direction);
 		}
 	}
@@ -77,8 +75,14 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	void OnTriggerEnter2D(Collider2D col) {
+		
 		if (col.gameObject.tag == "jump") {
 			SetVelocity (new Vector2 (xVelocity, jumpPower));
+		}
+
+		if (col.gameObject.tag == "balloon") {
+			SetVelocity (new Vector2 (xVelocity, jumpPower * 1.2f)); 
+			GetComponent<ScoreKeeper> ().AddToMultiplier ();
 		}
 
 		col.GetComponent<SelfDestruct> ().Kill ();
