@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour {
 	int bubblegum;
 
 	bool goingUp;
+	bool firstTime;
+
 	float previousYValue;
 
 	// Use this for initialization
@@ -30,11 +32,17 @@ public class PlayerMovement : MonoBehaviour {
 		direction = 1;
 		bubblegum = 0;
 		animator = GetComponent<Animator> ();
+		firstTime = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (playButton.GetComponent<StartGame> ().GetIsGameOn ()) {
+			if (firstTime) {
+				firstTime = false;
+				GameStartProtocol ();
+			}
+
 			SetXVelocity ();
 			UpdateMovement ();
 			UpdateAnimation ();
@@ -44,6 +52,11 @@ public class PlayerMovement : MonoBehaviour {
 	void UpdateMovement() {
 		transform.position = (Vector2)transform.position + (Vector2)GetVelocity ();
 		transform.localScale = new Vector3 (direction, 1, 1);
+	}
+
+	void GameStartProtocol() {
+		SetVelocity (new Vector2 (xVelocity, jumpPower));
+		GetComponent<Animator> ().SetBool ("gameStarted", true);
 	}
 
 	void UpdateAnimation() {

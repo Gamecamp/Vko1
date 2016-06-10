@@ -13,7 +13,7 @@ public class BackgroundSudoku : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if ((transform.position.y + 188.04f) < player.transform.position.y) {
+		if ((transform.position.y + 220f) < player.transform.position.y) {
 			Kill ();
 		}
 
