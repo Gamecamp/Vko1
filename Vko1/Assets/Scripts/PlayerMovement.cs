@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public GameObject playButton;
-
 	float yVelocity, xVelocity;
 	public float maxYVelocity, maxXVelocity;
 	public float jumpPower; 
@@ -34,11 +32,9 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playButton.GetComponent<StartGame> ().GetIsGameOn ()) {
-			SetXVelocity ();
-			UpdateMovement ();
-			UpdateAnimation ();
-		}
+		SetXVelocity ();
+		UpdateMovement ();
+		UpdateAnimation ();
 	}
 
 	void UpdateMovement() {
