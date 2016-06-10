@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ScoreKeeper : MonoBehaviour {
 
 	public GameObject player;
+	public GameObject playButton;
 	public float fallLength;
 
 	float height;
@@ -44,6 +45,7 @@ public class ScoreKeeper : MonoBehaviour {
 			hiScore = currentScore;
 		else if (currentYvalue < highestYvalue - fallLength) {
 			alive = false;
+			playButton.GetComponent<StartGame> ().UDead ();
 		}
 	}
 
