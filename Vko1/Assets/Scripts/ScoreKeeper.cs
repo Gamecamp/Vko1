@@ -12,6 +12,9 @@ public class ScoreKeeper : MonoBehaviour {
 	bool alive;
 	float hiScore, currentScore;
 
+	float highestYvalue;
+	float currentYvalue;
+
 	List<float> scoreKeeper;
 
 	float multiplier;
@@ -31,10 +34,15 @@ public class ScoreKeeper : MonoBehaviour {
 	void Update () {
 		
 		currentScore = (player.transform.position.y * multiplier) - breakingPoint;
+		currentYvalue = player.transform.position.y;
+
+		if (currentYvalue > highestYvalue) {
+			highestYvalue = currentYvalue;
+		}
 
 		if (currentScore > hiScore)
 			hiScore = currentScore;
-		else if (currentScore < hiScore - fallLength) {
+		else if (currentYvalue < highestYvalue - fallLength) {
 			alive = false;
 		}
 	}
