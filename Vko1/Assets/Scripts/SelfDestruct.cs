@@ -18,6 +18,12 @@ public class SelfDestruct : MonoBehaviour {
 	}
 
 	public void Kill() {
+		GetComponent<Animator> ().SetBool ("isAlive", false);
+		StartCoroutine (DieDieDie (0.3f));
+	}
+
+	IEnumerator DieDieDie(float waitTime) {
+		yield return new WaitForSeconds (waitTime);
 		Destroy (gameObject);
 	}
 }
